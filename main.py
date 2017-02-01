@@ -1,7 +1,7 @@
 # Created on 2017-1-28
 
-from myLib.LoadFile import LoadFile
+from loaddata.loadfile import load_file
 
 if __name__ == "__main__":
     print("Hello Jianping!")
-    stu = LoadFile("data.xlsx")
+    stu = load_file("data.xlsx")

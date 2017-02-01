@@ -1,16 +1,16 @@
 # -*- coding:GBK -*-
 import xlrd
-import Student
+import student
 
 # 常量声明
 ClassNum = 13
 
 
 # 读入学生信息，返回stuList列表
-def LoadFile(fileName):
+def load_file(fileName):
 
     data = xlrd.open_workbook(fileName)
-    stuList = [Student for i in range(0, 1400)]
+    stuList = [student for i in range(0, 1400)]
 
     for i in range(0, ClassNum):
         table = data.sheets()[i]
@@ -20,6 +20,6 @@ def LoadFile(fileName):
             name = table.cell(j, 1)
             for k in range(2, 11):
                 subject.append(table.cell(j, k))
-            stuList[int(num % 10000)] = Student.Student(num, name, subject)
+            stuList[int(num % 10000)] = student.Student(num, name, subject)
 
     return stuList
