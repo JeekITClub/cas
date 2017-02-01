@@ -1,5 +1,5 @@
 # Created on 2017-1-28
-
+#coding=utf-8
 from student.import_data import load_file
 import Tkinter
 

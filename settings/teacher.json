@@ -1,0 +1,31 @@
+{
+  "teachersNum": "1",
+  "A": {
+    "num": "1",
+    "name": "A",
+    "subject": "Physics",
+    "grade_layer": {
+      "grade1A": true,
+      "grade1B": true,
+      "grade2A": false,
+      "grade2B": false,
+      "grade3A": false,
+      "grade3B": false
+    },
+    "teach":true
+  },
+  "B": {
+    "num": "2",
+    "name": "B",
+    "subject": "Physics",
+    "grade_layer": {
+      "grade1A": true,
+      "grade1B": true,
+      "grade2A": false,
+      "grade2B": false,
+      "grade3A": false,
+      "grade3B": false
+    },
+    "teach":false
+  }
+}
