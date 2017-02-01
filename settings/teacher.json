@@ -1,6 +1,6 @@
 {
   "teachersNum": 2,
-  "A": {
+  "1": {
     "num": "1",
     "name": "A",
     "subject": "Physics",
@@ -14,17 +14,17 @@
     },
     "teach":true
   },
-  "B": {
+  "2": {
     "num": "2",
     "name": "B",
-    "subject": "Physics",
+    "subject": "Maths",
     "grade_layer": {
-      "grade1A": true,
       "grade1B": true,
-      "grade2A": false,
+      "grade1C": true,
       "grade2B": false,
-      "grade3A": false,
-      "grade3B": false
+      "grade2C": false,
+      "grade3B": false,
+      "grade3C": false
     },
     "teach":false
   }
