@@ -1,10 +1,11 @@
 # -*- coding:GBK -*-
 import xlrd
+
 import student
 
 # 常量声明
 ClassNum = 13
-
+# 班级数量暂定为常量
 
 # 读入学生信息，返回stuList列表
 def load_file(fileName):
