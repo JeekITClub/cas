@@ -1,15 +1,20 @@
-# -*- coding:GBK -*-
+# -*- coding:utf-8 -*-
 import xlrd
 
 import student
 
-# ³£Á¿ÉùÃ÷
+# å¸¸é‡å£°æ˜
 ClassNum = 13
-# °à¼¶ÊıÁ¿Ôİ¶¨Îª³£Á¿
 
-# ¶ÁÈëÑ§ÉúĞÅÏ¢£¬·µ»ØstuListÁĞ±í
+
+# ç­çº§æ•°é‡æš‚å®šä¸ºå¸¸é‡
+def check_error(filename):
+    # æ£€æŸ¥è¡¨æ ¼æ˜¯å¦é”™è¯¯çš„å‡½æ•°
+    data = xlrd.open_workbook(filename)
+
+
+# è¯»å…¥å­¦ç”Ÿä¿¡æ¯ï¼Œè¿”å›stuListåˆ—è¡¨
 def load_file(fileName):
-
     data = xlrd.open_workbook(fileName)
     stuList = [student for i in range(0, 1400)]
 

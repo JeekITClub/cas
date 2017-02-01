@@ -6,6 +6,8 @@ class teacher:
     subject=""
     grade=[]
     #部分教师跨年级上课
+    layer=[]
+    #有些老师教两个层次的学生
     teach=True
     #部分教师长期病假或产假无法进行正常教学
 

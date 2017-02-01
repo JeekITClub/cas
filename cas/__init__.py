@@ -1,8 +1,8 @@
 #coding=utf-8
 #Package for course management
-import settings
-import teacher
-import student
+from cas import settings
+
+
 class course:
     def arrange(self):
         #用于安排课表

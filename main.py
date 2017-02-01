@@ -1,6 +1,7 @@
 # Created on 2017-1-28
 
-from cas.importdata import load_file
+from student.import_data import load_file
+import Tkinter
 
 if __name__ == "__main__":
     print("Hello Jianping!")
