@@ -9,9 +9,10 @@ def check_error(filename):
     data = xlrd.open_workbook(filename)
     #未完
 
+
 # 读入教师信息，存储在teacher.json
-def load_file(fileName):
-    data = xlrd.open_workbook(fileName)
+def load_file(filename):
+    data = xlrd.open_workbook(filename)
 
 
     #未完

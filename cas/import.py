@@ -1,4 +1,5 @@
+
 import settings
-import student
-import teacher
-import classroom
+
+settings = settings.Settings()
+settings.read_json("teachers")
