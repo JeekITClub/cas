@@ -12,4 +12,6 @@ def check_error(filename):
 # 读入教师信息，存储在teacher.json
 def load_file(fileName):
     data = xlrd.open_workbook(fileName)
+
+
     #未完

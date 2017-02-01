@@ -1,0 +1,35 @@
+{
+  "studentNum":520,
+  "20150101":{
+    "num":20150101,
+    "name":"ABC",
+    "pclass":1,
+    "tclass":{
+      "Chinese":"",
+      "Maths":"B1",
+      "English":"",
+      "Physics":"B1",
+      "Chemistry":"B1",
+      "Biology":"B1",
+      "Geography":"A1",
+      "History":"A1",
+      "Politics":"A1"
+    }
+  },
+  "20150102":{
+    "num":20150102,
+    "name":"ACB",
+    "pclass":1,
+    "tclass":{
+      "Chinese":"",
+      "Maths":"B1",
+      "English":"",
+      "Physics":"B1",
+      "Chemistry":"B1",
+      "Biology":"B1",
+      "Geography":"A1",
+      "History":"A1",
+      "Politics":"A1"
+    }
+  }
+}
