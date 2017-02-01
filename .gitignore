@@ -1,6 +1,6 @@
 *.pyc
 
-
+.idea
 .idea/modules.xml
 .idea/cas.iml
 .idea/misc.xml
