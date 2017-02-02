@@ -8,3 +8,6 @@ import classroom
 
 #from cas import * 即可
 __all__ = ['settings', 'student', 'teacher', 'classroom']
+class cas:
+    def __init__(self):
+        pass
