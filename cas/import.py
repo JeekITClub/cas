@@ -1,7 +1,5 @@
 #coding=utf-8
 
-import settings
-
 
 class error:
     def __init__(self):
