@@ -1,17 +1,6 @@
 #coding=utf-8
 
+import json,xlrd
 
-class error:
-    def __init__(self):
-        self.sentence="No Error"
-
-    def error_return(self,sentence):
-        error_dict={}
-
-class load_settings:
-
-    def __init__(self):
-        self.settings="settings"
-    def apply_settings(self,item):
-        pass
-
+def Import(type,file):
+    data=xlrd.open_workbook(file)
