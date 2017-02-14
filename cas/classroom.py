@@ -110,16 +110,36 @@ class ClassDivision:
         self.json["home"]["ghp"]["num"]=state[19]
 
 
-    def expand(self,location,expand_nodes_num,solution):
-        if self.json[]
+    def Layer2_expand(self,location,expand_nodes_num,solution):
+        #这个函数最后要改成所有层所有节点都通用，有待思考
 
+        if self.json["home"][location]["children"]==True:
+            pass
+
+        else:
+            self.json["home"][location]["children"]={
+                "children1":{
+                    "children":False,
+                    "num":solution[0]
+                },
+                "children2":{
+                    "children":False,
+                    "num":solution[1]
+                }
+            }
+
+
+    def inherit(self,location):
+        #这个函数是当无法进行expand的时候那么继承父级的数据，以保证层数整齐
+
+        pass
 
 
 
     def TreeNodeLayer2(self):
         for key in self.json["home"]:
             if self.json["home"][key]["num"]>=40:
-                self.expand(,2,[40,int(self.json["home"][key]["num"])-40])
+                self.Layer2_expand(key,2,[40,int(self.json["home"][key]["num"])-40])
                 #！！！！
             else:
                 pass
