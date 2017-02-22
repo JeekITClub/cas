@@ -4,7 +4,7 @@
 
 
 class ClassDivision:
-    def __init__(self,state=[],students_num):
+    def __init__(self,state=[],students_num,class_num,class_students_num_region=[40,40]):
         self.json={
             "home":{
             "layer_num":2
@@ -115,6 +115,8 @@ class ClassDivision:
         self.json["home"]["layer1"]["bhp"]["num"]=state[18]
         self.json["home"]["layer1"]["ghp"]["num"]=state[19]
         self.students_num=students_num
+        self.class_num=class_num
+        self.class_students_num_region=class_students_num_region
 
     def expand(self,edit_layer,subject,node_num,solution):
         #这个函数最后要改成所有层所有节点都通用，有待思考
@@ -164,7 +166,7 @@ class ClassDivision:
             if self.json["home"]["layer1"][key]["num"]>=40:          
                 solution=[]
                 node_num=1
-                for n in range(1,students_num/40+1):
+                for n in range(1,self.class_num):
                     num=self.json["home"]["layer1"][key]["num"]
                     if self.json["home"]["layer1"][key]["num"]<=n*40:                        
                         num-=40
@@ -204,4 +206,3 @@ class ClassDivision:
                         for num in self.json["home"][layer][subject][node].keys():
                             # 这里最后应该也改成将数据导入到控件
                             print self.json["home"][layer][subject][node][num]
-
