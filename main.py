@@ -1,102 +1,76 @@
-# Created on 2017-1-28
-#coding=utf-8
 import os
-os.environ['KERAS_BACKEND']='cntk'
-import keras
+os.environ['KERAS_BACKEND']='tensorflow'
 import numpy as np
+np.random.seed(1337)  # for reproducibility
+from keras.datasets import mnist
+from keras.utils import np_utils
 from keras.models import Sequential
-from keras.optimizers import RMSprop
+from keras.layers import Dense, Activation, Conv2D, MaxPooling2D, Flatten
+from keras.optimizers import Adam
 
-class DQNAgent:
-    def __init__(self, env):
-        self.env = env
-        self.memory = []
-        self.gamma = 0.9  # decay rate
-        self.epsilon = 1  # exploration
-        self.epsilon_decay = .995
-        self.epsilon_min = 0.1
-        self.learning_rate = 0.0001
-        self._build_model()
+# download the mnist to the path '~/.keras/datasets/' if it is the first time to be called
+# X shape (60,000 28x28), y shape (10,000, )
+(X_train, y_train), (X_test, y_test) = mnist.load_data()
 
-    def _build_model(self):
-        model = Sequential()
-        from keras.layers import Dense
-        model.add(Dense(128, input_dim=4, activation='tanh'))
-        model.add(Dense(128, activation='tanh'))
-        model.add(Dense(128, activation='tanh'))
-        model.add(Dense(2, activation='linear'))
-        model.compile(loss='mse',
-                      optimizer=RMSprop(lr=self.learning_rate))
-        self.model = model
+# data pre-processing
+X_train = X_train.reshape(-1, 1,28, 28)
+X_test = X_test.reshape(-1, 1,28, 28)
+y_train = np_utils.to_categorical(y_train)
+y_test = np_utils.to_categorical(y_test)
 
-    def remember(self, state, action, reward, next_state, done):
-        self.memory.append((state, action, reward, next_state, done))
+# Another way to build your CNN
+model = Sequential()
 
-    def act(self, state):
-        if np.random.rand() <= self.epsilon:
-            return env.action_space.sample()
-        act_values = self.model.predict(state)
-        return np.argmax(act_values[0])  # returns action
+# Conv layer 1 output shape (32, 28, 28)
+model.add(Conv2D(
+    filter=32,
+    kernel_size=(5,5),
+    padding='same',     # Padding method
+    dim_ordering='th',      # if use tensorflow, to set the input dimension order to theano ("th") style, but you can change it.
+    input_shape=(1,         # channels
+                 28, 28,)# height & width
+))
+model.add(Activation('relu'))
 
-    def replay(self, batch_size):
-        batches = min(batch_size, len(self.memory))
-        batches = np.random.choice(len(self.memory), batches)
-        for i in batches:
-            state, action, reward, next_state, done = self.memory[i]
-            target = reward
-            if not done:
-                target = reward + self.gamma * \
-                                  np.amax(self.model.predict(next_state)[0])
-            target_f = self.model.predict(state)
-            target_f[0][action] = target
-            self.model.fit(state, target_f, nb_epoch=1, verbose=0)
-        if self.epsilon > self.epsilon_min:
-            self.epsilon *= self.epsilon_decay
+# Pooling layer 1 (max pooling) output shape (32, 14, 14)
+model.add(MaxPooling2D(
+    pool_size=(2, 2),
+    strides=(2, 2),
+    border_mode='same',    # Padding method
+))
 
-if __name__ == "__main__":
-    # 为agent初始化gym环境参数
-    env = gym.make('CartPole-v0')
-    agent = DQNAgent(env)
+# Conv layer 2 output shape (64, 14, 14)
+model.add(Conv2D(64, 5, 5, padding='same'))
+model.add(Activation('relu'))
 
-    # 游戏的主循环
-    for e in range(episodes):
+# Pooling layer 2 (max pooling) output shape (64, 7, 7)
+model.add(MaxPooling2D(pool_size=(2, 2), border_mode='same'))
 
-        # 在每次游戏开始时复位状态参数
-        state = env.reset()
-        state = np.reshape(state, [1, 4])
+# Fully connected layer 1 input shape (64 * 7 * 7) = (3136), output shape (1024)
+model.add(Flatten())
+model.add(Dense(1024))
+model.add(Activation('relu'))
 
-        # time_t 代表游戏的每一帧
-        # 我们的目标是使得杆子尽可能长地保持竖直朝上
-        # time_t 越大，分数越高
-        for time_t in range(5000):
-            # turn this on if you want to render
-            # env.render()
+# Fully connected layer 2 to shape (10) for 10 classes
+model.add(Dense(10))
+model.add(Activation('softmax'))
 
-            # 选择行为
-            action = agent.act(state)
+# Another way to define your optimizer
+adam = Adam(lr=1e-4)
 
-            # 在环境中施加行为推动游戏进行
-            next_state, reward, done, _ = env.step(action)
-            next_state = np.reshape(next_state, [1, 4])
+# We add metrics to get more results you want to see
+model.compile(optimizer=adam,
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
 
-            # reward缺省为1
-            # 在每一个agent完成了目标的帧agent都会得到回报
-            # 并且如果失败得到-100
-            reward = -100 if done else reward
+print('Training ------------')
+# Another way to train the model
+model.fit(X_train, y_train, nb_epoch=1, batch_size=32,)
 
-            # 记忆先前的状态，行为，回报与下一个状态
-            agent.remember(state, action, reward, next_state, done)
+print('\nTesting ------------')
+# Evaluate the model with the metrics we defined earlier
+loss, accuracy = model.evaluate(X_test, y_test)
 
-            # 使下一个状态成为下一帧的新状态
-            state = copy.deepcopy(next_state)
-
-            # 如果游戏结束done被置为ture
-            # 除非agent没有完成目标
-            if done:
-                # 打印分数并且跳出游戏循环
-                print("episode: {}/{}, score: {}"
-                      .format(e, episodes, time_t))
-                break
-        # 通过之前的经验训练模型
-        agent.replay(32)
+print('\ntest loss: ', loss)
+print('\ntest accuracy: ', accuracy)
 
