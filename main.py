@@ -54,14 +54,25 @@ class QLearning:
 
 class1 = PolicyClassroom(1)
 diversity_list = []
+choice_list = np.zeros(20)
 for i in range(1, 40):
     choice = random.randint(1, 20) - 1
-    print(choice)
+    choice_list[choice] += 1
     class1.add_student(choice)
     diversity_list.append(class1.diversity())
     print(class1.diversity())
-    # plt.subplot(2,1,1)
 
+plt.subplot(2,1,1)
+# add a plt for choice diversity
 plt.plot(np.linspace(0, 39, 39), diversity_list)
 plt.title('Diversity')
+
+labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
+sizes = [15, 30, 45, 10]
+
+plt.subplot(2,1,2)
+plt.pie(choice_list, autopct='%1.1f%%',
+        shadow=True, startangle=90)
+plt.axis('equal')
+
 plt.show()
