@@ -1,6 +1,7 @@
 import random
 import numpy as np
-
+import tensorflow
+import matplotlib.pyplot as plt
 
 
 class Student:
@@ -24,7 +25,7 @@ def transform(student):
 
 class PolicyClassroom:
     def __init__(self, class_num):
-        self.student = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.student = np.zeros(20)
         self.class_num = class_num
 
     def add_student(self, choice):
@@ -33,7 +34,7 @@ class PolicyClassroom:
     def diversity(self):
         sum = 0.0
         for choice in self.student:
-            sum  += choice
+            sum += choice
         diversity = 0.0
         for choice in self.student:
             diversity += choice ** 2 / sum ** 2
@@ -52,8 +53,15 @@ class QLearning:
 
 
 class1 = PolicyClassroom(1)
-for i in range(1,40):
-    choice = random.randint(1,20)-1
+diversity_list = []
+for i in range(1, 40):
+    choice = random.randint(1, 20) - 1
     print(choice)
     class1.add_student(choice)
+    diversity_list.append(class1.diversity())
     print(class1.diversity())
+    # plt.subplot(2,1,1)
+
+plt.plot(np.linspace(0, 39, 39), diversity_list)
+plt.title('Diversity')
+plt.show()
