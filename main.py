@@ -1,76 +1,59 @@
-import os
-os.environ['KERAS_BACKEND']='tensorflow'
+import random
 import numpy as np
-np.random.seed(1337)  # for reproducibility
-from keras.datasets import mnist
-from keras.utils import np_utils
-from keras.models import Sequential
-from keras.layers import Dense, Activation, Conv2D, MaxPooling2D, Flatten
-from keras.optimizers import Adam
 
-# download the mnist to the path '~/.keras/datasets/' if it is the first time to be called
-# X shape (60,000 28x28), y shape (10,000, )
-(X_train, y_train), (X_test, y_test) = mnist.load_data()
 
-# data pre-processing
-X_train = X_train.reshape(-1, 1,28, 28)
-X_test = X_test.reshape(-1, 1,28, 28)
-y_train = np_utils.to_categorical(y_train)
-y_test = np_utils.to_categorical(y_test)
 
-# Another way to build your CNN
-model = Sequential()
+class Student:
+    def __init__(self, choice):
+        self.choice = choice
+        self.policy_class = 0
 
-# Conv layer 1 output shape (32, 28, 28)
-model.add(Conv2D(
-    filter=32,
-    kernel_size=(5,5),
-    padding='same',     # Padding method
-    dim_ordering='th',      # if use tensorflow, to set the input dimension order to theano ("th") style, but you can change it.
-    input_shape=(1,         # channels
-                 28, 28,)# height & width
-))
-model.add(Activation('relu'))
 
-# Pooling layer 1 (max pooling) output shape (32, 14, 14)
-model.add(MaxPooling2D(
-    pool_size=(2, 2),
-    strides=(2, 2),
-    border_mode='same',    # Padding method
-))
+student_list = []
 
-# Conv layer 2 output shape (64, 14, 14)
-model.add(Conv2D(64, 5, 5, padding='same'))
-model.add(Activation('relu'))
 
-# Pooling layer 2 (max pooling) output shape (64, 7, 7)
-model.add(MaxPooling2D(pool_size=(2, 2), border_mode='same'))
+def transform(student):
+    s = student
+    if s.choice == [1, 1, 1, 0, 0, 0]:
+        return 1
+    elif s.choice == [1, 1, 0, 1, 0, 0]:
+        return 2
+    elif s.choice == [1, 1, 0, 0, 1, 0]:
+        return 3
 
-# Fully connected layer 1 input shape (64 * 7 * 7) = (3136), output shape (1024)
-model.add(Flatten())
-model.add(Dense(1024))
-model.add(Activation('relu'))
 
-# Fully connected layer 2 to shape (10) for 10 classes
-model.add(Dense(10))
-model.add(Activation('softmax'))
+class PolicyClassroom:
+    def __init__(self, class_num):
+        self.student = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.class_num = class_num
 
-# Another way to define your optimizer
-adam = Adam(lr=1e-4)
+    def add_student(self, choice):
+        self.student[choice] += 1
 
-# We add metrics to get more results you want to see
-model.compile(optimizer=adam,
-              loss='categorical_crossentropy',
-              metrics=['accuracy'])
+    def diversity(self):
+        sum = 0.0
+        for choice in self.student:
+            sum  += choice
+        diversity = 0.0
+        for choice in self.student:
+            diversity += choice ** 2 / sum ** 2
+        return diversity
 
-print('Training ------------')
-# Another way to train the model
-model.fit(X_train, y_train, nb_epoch=1, batch_size=32,)
 
-print('\nTesting ------------')
-# Evaluate the model with the metrics we defined earlier
-loss, accuracy = model.evaluate(X_test, y_test)
+class LearningClassroom:
+    def __init__(self):
+        pass
 
-print('\ntest loss: ', loss)
-print('\ntest accuracy: ', accuracy)
 
+class QLearning:
+
+    def __init__(self):
+        pass
+
+
+class1 = PolicyClassroom(1)
+for i in range(1,40):
+    choice = random.randint(1,20)-1
+    print(choice)
+    class1.add_student(choice)
+    print(class1.diversity())

@@ -1,15 +1,30 @@
+import tensorflow as tf
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-sns.set(style="white", color_codes=True)
 
-# Generate a random bivariate dataset
-rs = np.random.RandomState(9)
-mean = [0, 0]
-cov = [(1, 0), (0, 2)]
-x, y = rs.multivariate_normal(mean, cov, 100).T
+# 使用 NumPy 生成假数据(phony data), 总共 100 个点.
+x_data = np.float32(np.random.rand(2, 100)) # 随机输入
+y_data = np.dot([0.100, 0.200], x_data) + 0.300
 
-# Use JointGrid directly to draw a custom plot
-grid = sns.JointGrid(x, y, space=0, size=6, ratio=50)
-grid.plot_joint(plt.scatter, color="g")
-grid.plot_marginals(sns.rugplot, height=1, color="g")
+# 构造一个线性模型
+#
+b = tf.Variable(tf.zeros([1]))
+W = tf.Variable(tf.random_uniform([1, 2], -1.0, 1.0))
+y = tf.matmul(W, x_data) + b
+
+# 最小化方差
+loss = tf.reduce_mean(tf.square(y - y_data))
+optimizer = tf.train.GradientDescentOptimizer(0.5)
+train = optimizer.minimize(loss)
+
+# 初始化变量
+init = tf.initialize_all_variables()
+
+# 启动图 (graph)
+sess = tf.Session()
+sess.run(init)
+
+# 拟合平面
+for step in range(0, 201):
+    sess.run(train)
+    if step % 20 == 0:
+        print(step, sess.run(W), sess.run(b))
