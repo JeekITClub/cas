@@ -2,7 +2,7 @@ import random
 import numpy as np
 import tensorflow
 import matplotlib.pyplot as plt
-
+import pandas as pd
 
 class Student:
     def __init__(self, choice):
@@ -21,7 +21,8 @@ def transform(student):
         return 2
     elif s.choice == [1, 1, 0, 0, 1, 0]:
         return 3
-
+    elif s.choice == [1,1,0,0,0,1]:
+        return 4
 
 class PolicyClassroom:
     def __init__(self, class_num):
@@ -38,7 +39,7 @@ class PolicyClassroom:
         diversity = 0.0
         for choice in self.student:
             diversity += choice ** 2 / sum ** 2
-        return diversity
+        return diversity * 10000
 
 
 class LearningClassroom:
@@ -56,7 +57,8 @@ class1 = PolicyClassroom(1)
 diversity_list = []
 choice_list = np.zeros(20)
 for i in range(1, 40):
-    choice = random.randint(1, 20) - 1
+    # choice = random.randint(1, 20) - 1
+    choice = random.randint(0, 19)
     choice_list[choice] += 1
     class1.add_student(choice)
     diversity_list.append(class1.diversity())
@@ -76,3 +78,6 @@ plt.pie(choice_list, autopct='%1.1f%%',
 plt.axis('equal')
 
 plt.show()
+
+df = pd.DataFrame(choice_list)
+print(df)
