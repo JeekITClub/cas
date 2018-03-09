@@ -4,6 +4,7 @@ import tensorflow
 import matplotlib.pyplot as plt
 import pandas as pd
 
+
 class Student:
     def __init__(self, choice):
         self.choice = choice
@@ -12,17 +13,6 @@ class Student:
 
 student_list = []
 
-
-def transform(student):
-    s = student
-    if s.choice == [1, 1, 1, 0, 0, 0]:
-        return 1
-    elif s.choice == [1, 1, 0, 1, 0, 0]:
-        return 2
-    elif s.choice == [1, 1, 0, 0, 1, 0]:
-        return 3
-    elif s.choice == [1,1,0,0,0,1]:
-        return 4
 
 class PolicyClassroom:
     def __init__(self, class_num):
@@ -64,7 +54,7 @@ for i in range(1, 40):
     diversity_list.append(class1.diversity())
     print(class1.diversity())
 
-plt.subplot(2,1,1)
+plt.subplot(2, 1, 1)
 # add a plt for choice diversity
 plt.plot(np.linspace(0, 39, 39), diversity_list)
 plt.title('Diversity')
@@ -72,7 +62,7 @@ plt.title('Diversity')
 labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
 sizes = [15, 30, 45, 10]
 
-plt.subplot(2,1,2)
+plt.subplot(2, 1, 2)
 plt.pie(choice_list, autopct='%1.1f%%',
         shadow=True, startangle=90)
 plt.axis('equal')
